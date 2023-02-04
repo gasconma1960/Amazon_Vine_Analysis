@@ -63,6 +63,23 @@ The final customers_table DataFrame should look like this:
 
 
 
+# **SOURCES:**
+https://s3.amazonaws.com/amazon-reviews-pds/tsv/amazon_reviews_us_Grocery_v1_00.tsv.gz
+
+- AWS Console
+
+- pgAdmin 4
+
+- Google Colab
+
+# **MODULE 17 Challenge**
+
+by **Marisol Gascon Linarez**
+
+**UCF Bootcamp Data Visualization and Analytics**
+
+
+
 
 
 
