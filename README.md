@@ -76,12 +76,4 @@ https://s3.amazonaws.com/amazon-reviews-pds/tsv/amazon_reviews_us_Grocery_v1_00.
 
 by **Marisol Gascon Linarez**
 
-**UCF Bootcamp Data Visualization and Analytics**
-
-
-
-
-
-
-
-  
+**UCF Bootcamp Data Visualization and Analytics** 
