@@ -29,37 +29,142 @@ Follow the instructions below to complete Deliverable 1.
 7. First extract one of the review datasets, then create a new DataFrame.
 8. Next, follow the steps below to transform the dataset into four DataFrames that will match the schema in the pgAdmin tables:
 
+## The customers_table DataFrame
+
+To create the `customers_table`, use the code in the `Amazon_Reviews_ETL_starter_code.ipynb` file and follow the steps below to aggregate the reviews by `customer_id`.
+
+   - Use the `groupby()` function on the `customer_id` column of the DataFrame I created in Step 7.
+
+   - Count all the customer ids using the `agg()` function by chaining it to the `groupby()` function. After I use this function, a new column will be created, `count(customer_id)`.
+
+   - Rename the `count(customer_id)` column using the` withColumnRenamed()` function so it matches the schema for the `customers_table` in pgAdmin.
+
+   - The final customers_table DataFrame should look like this:
 
 ![image](https://user-images.githubusercontent.com/112348240/216742599-847396df-7dfe-4d4f-a340-f5f8f09efda2.png)
 
+## The products_table DataFrame
+
+To create the `products_table`, use the `select()` function to select the `product_id` and `product_title`, then drop duplicates with the `drop_duplicates()` function to retrieve only `unique product_ids`. Refer to the code snippet provided in the `Amazon_Reviews_ETL_starter_code.ipynb` file for assistance.
+
+The final `products_table` DataFrame should look like this:
+
 ![image](https://user-images.githubusercontent.com/112348240/216742611-51fec4f8-e2a5-4902-987e-4928f7a760e7.png)
+
+## The review_id_table DataFrame
+
+To create the `review_id_table`, use the `select()` function to select the columns that are in the `review_id_table` in pgAdmin (as shown in the following image), and convert the `review_date` column to a date using the code snippet provided in the `Amazon_Reviews_ETL_starter_code.ipynb` file.
+
+The final `review_id_table` DataFrame should look like this:
 
 ![image](https://user-images.githubusercontent.com/112348240/216742626-a8f47ec6-7a96-430b-a229-30b360c82254.png)
 
+## The vine_table DataFrame
+To create the `vine_table`, use the `select()` function to select only the columns that are in the `vine_table` in pgAdmin (as shown in the following image).
+
+The final `vine_table` DataFrame should look like this:
+
 ![image](https://user-images.githubusercontent.com/112348240/216742645-80b2a145-bcda-44b6-a162-6f917c8d0e03.png)
 
+**Screenshot for the code when Load the DataFrames that correspond to tables in pgAdmin**
+
 ![image](https://user-images.githubusercontent.com/112348240/216742684-d7389ece-2c9c-4742-9948-b826e7820a98.png)
+
+# Deliverable 2: Determine Bias of Vine Reviews 
+
+Using my knowledge of PySpark, Pandas, or SQL, I’ll determine if there is any bias towards reviews that were written as part of the Vine program. For this analysis, I'll determine if having a paid Vine review makes a difference in the percentage of 5-star reviews.
+
+Using either PySpark, Pandas, or SQL, follow the instructions below to complete Deliverable 2.
+
+1. Filter the data and create a new DataFrame or table to retrieve all the rows where the `total_votes` count is equal to or greater than 20 to pick reviews that are more likely to be helpful and to avoid having division by zero errors later on. 
 
 ![image](https://user-images.githubusercontent.com/112348240/216742723-6fb6fec4-faa7-4f47-a598-8310a61abae9.png)
 
 ![image](https://user-images.githubusercontent.com/112348240/216742742-f449d48a-820e-434e-a466-a6c530554aef.png)
 
+2. Filter the new DataFrame or table created in Step 1 and create a new DataFrame or table to retrieve all the rows where the number of `helpful_votes` divided by `total_votes` is equal to or greater than 50%.
+    - If I use the SQL option below, I’ll need to cast your columns as floats using `WHERE CAST(helpful_votes AS FLOAT)/CAST(total_votes AS FLOAT) >=0.5`.
+
 ![image](https://user-images.githubusercontent.com/112348240/216742750-746555ff-1c4c-4b78-80d3-9daba47de399.png)
+
+3. Filter the DataFrame or table created in Step 2, and create a new DataFrame or table that retrieves all the rows where a review was written as part of the Vine program (paid), `vine == 'Y'`.
 
 ![image](https://user-images.githubusercontent.com/112348240/216742967-0d2c92e6-bbf6-4c9b-9ec9-9fd336f51a1f.png)
 
+4. Repeat Step 3, but this time retrieve all the rows where the review was not part of the Vine program (unpaid), `vine == 'N'`.
+
 ![image](https://user-images.githubusercontent.com/112348240/216743089-c5e1d558-b758-409f-bcd3-ab76b24d5ae4.png)
+  
+5. Determine the total number of reviews, the number of 5-star reviews, and the percentage of 5-star reviews for the two types of review (paid vs unpaid).
 
-## The customers_table DataFrame
-To create the `customers_table`, use the code in the `Amazon_Reviews_ETL_starter_code.ipynb` file and follow the steps below to aggregate the reviews by `customer_id`.
+**Total number of reviews**
 
-   - Use the `groupby()` function on the `customer_id` column of the DataFrame you created in Step 7.
+![image](https://user-images.githubusercontent.com/112348240/216845394-7513f395-0d59-449b-902f-2a7307677598.png)
 
-   - Count all the customer ids using the `agg()` function by chaining it to the `groupby()` function. After you use this function, a new column will be created, `count(customer_id)`.
+**Total helpul vine reviews Vine == 'Y'**
 
-   - Rename the count(customer_id) column using the withColumnRenamed() function so it matches the schema for the customers_table in pgAdmin.
+![image](https://user-images.githubusercontent.com/112348240/216845583-02cca5ef-84e0-4539-aaec-c7bb9a4e60a5.png)
 
-The final customers_table DataFrame should look like this:
+**Total helpul vine reviews Vine == 'N'**
+
+![image](https://user-images.githubusercontent.com/112348240/216845730-0b715a2f-e85c-4eeb-9bcd-223ea241a107.png)
+
+**Total helpul vine reviews Vine == 'Y' on 5-Stars reviews**
+![image](https://user-images.githubusercontent.com/112348240/216845791-57deffb3-3bd7-4090-a369-5fbce36c34fb.png)
+
+**Total helpul vine reviews Vine == 'N' on 5-Stars reviews**
+![image](https://user-images.githubusercontent.com/112348240/216845768-db9053ff-eb61-4f71-b5c5-4e9527283347.png)
+
+**Percentage of Vine reviews were 5 stars**
+![image](https://user-images.githubusercontent.com/112348240/216845813-466fe467-0567-4153-bc7c-66a9b1e7f914.png)
+
+**Percentage of non-Vine reviews were 5 stars**
+![image](https://user-images.githubusercontent.com/112348240/216845850-782e5658-694b-4ad2-8159-b6aca73801f6.png)
+
+## Using PySpark
+1. Create a new Google Colab Notebook, and name it `Vine_Review_Analysis`
+2. Extract the dataset you used in Deliverable 1.
+3. Recreate the `vine_table`, and perform my analysis using the steps above.
+4. Export my `Vine_Review_Analysis` Google Colab Notebook as an `ipynb` file, and save it to your Amazon_Vine_Analysis GitHub repository.
+
+# Deliverable 3: A Written Report on the Analysis
+
+# **Overview of the analysis**:
+
+> Analyzing Amazon reviews written by members of the paid Amazon Vine program. The Amazon Vine program is a service that allows manufacturers and publishers to receive reviews for their products. Companies like SellBy pay a small fee to Amazon and provide products to Amazon Vine members, who are then required to publish a review.
+
+# **Results**: 
+    - How many Vine reviews and non-Vine reviews were there? 
+      We have a 61 total Vine Reviews and non-Vine reviews are 28278
+       
+    - How many Vine reviews were 5 stars?
+      We have 20
+      
+    - How many non-Vine reviews were 5 stars?
+      We have 15686
+      
+    - What percentage of Vine reviews were 5 stars? 
+      The Percentage Vine reviews is 32.78688524590164
+      
+    - What percentage of non-Vine reviews were 5 stars?
+      The Percentage non-Vine reviews is 55.470683923898434
+      
+# **Summary**: 
+   Based on the results is a positivity bias since for reviews in the Vine program. So, this is reflected on the higher percentage (32.79%) of 5-star Vine reviews compared to the non-Vine reviews (55.47%).  
+   One additional analysis that could be done to support this statement is to compare the average rating of Vine reviews and non-Vine reviews. With this extra analysis will give a much clear understanding of the overall difference in the quality of the reviews between the two groups.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
